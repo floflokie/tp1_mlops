@@ -4,7 +4,8 @@ LABEL authors="florinekieraga"
 WORKDIR /app
 COPY ./requirements.txt /app/requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install --no-cache-dir --upgrade pip
+RUN pip install -r /app/requirements.txt
 
 COPY . /app
 

@@ -1,5 +1,4 @@
 import streamlit as st
-import joblib
 from model_utils import load_model, make_prediction
 
 model = load_model()
