@@ -1,11 +1,6 @@
 import streamlit as st
 import joblib
-
-
-def load_model():
-    model_loaded = joblib.load("regression.joblib")
-    return model_loaded
-
+from model_utils import load_model, make_prediction
 
 model = load_model()
 size = st.number_input("Size")
@@ -13,5 +8,5 @@ nb_rooms = st.number_input("Number of rooms")
 garden = st.number_input("Garden")
 
 if st.button("Predict"):
-    result = model.predict([[size, nb_rooms, garden]])
+    result = make_prediction(size, nb_rooms, garden, model)
     st.write(result)
