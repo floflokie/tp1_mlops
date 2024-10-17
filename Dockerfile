@@ -9,4 +9,4 @@ RUN pip install -r /app/requirements.txt
 
 COPY . /app
 
-CMD ["fastapi", "run", "model_backend.py", "--port", "8016"]
+CMD ["fastapi", "run", "model_backend.py", "--port", "8016", "--host", "0.0.0.0"]
