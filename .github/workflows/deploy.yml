@@ -28,4 +28,4 @@ jobs:
       - name: Docker pull
         run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/mlops1
       - name: Docker stop and start
-        run: docker stop mlops1; docker start mlops1 -p 8016:8016
+        run: docker stop mlops1; docker rm mlops1; docker run -d -p 8016:8016 --name mlops1 ${{ secrets.DOCKERHUB_USERNAME }}/mlops1
