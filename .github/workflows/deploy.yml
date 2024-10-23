@@ -28,6 +28,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           password: ${{ secrets.SSH_PASSWORD }}
+          username: ubuntu
           script: |
             docker compose pull ${{ secrets.DOCKERHUB_USERNAME }}/mlops1
             docker compose up -d
