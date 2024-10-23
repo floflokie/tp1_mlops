@@ -12,9 +12,11 @@ jobs:
       - name: Build Docker image with Docker Compose
         run: docker compose -f docker-compose.yml build
       - name: Tag the model
-        run: docker tag tp1_mlops-api ${{ secrets.DOCKERHUB_USERNAME }}/tp1_mlops-api
+        run: docker tag tp1_mlops-api ${{ secrets.DOCKERHUB_USERNAME }}/mlops1
+      - name: Login
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push Docker image to DockerHub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/tp1_mlops-api
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/mlops1
 
   deploy:
     runs-on: ubuntu-latest
@@ -29,5 +31,5 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd /home/ubuntu
-            docker compose pull ${{ secrets.DOCKERHUB_USERNAME }}/tp1_mlops-api
+            docker compose pull ${{ secrets.DOCKERHUB_USERNAME }}/mlops1
             docker compose up -d
