@@ -24,4 +24,8 @@ jobs:
 
     steps:
       - name: Deploy to Production
-        run: sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_HOST }} "docker compose pull ${{ secrets.DOCKERHUB_USERNAME }}/mlops1 && docker compose up -d"
+        run: sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_HOST }}
+      - name: Docker pull
+        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/mlops1
+      - name: Docker
+        run: docker run -d -p 8016:8016 ${{ secrets.DOCKERHUB_USERNAME }}/mlops1
