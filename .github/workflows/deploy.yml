@@ -12,7 +12,7 @@ jobs:
       - name: Build Docker image with Docker Compose
         run: docker compose -f docker-compose.yml build
       - name: Tag the model
-        run: docker tag ml_model ${{ secrets.DOCKERHUB_USERNAME }}/api
+        run: docker tag api ${{ secrets.DOCKERHUB_USERNAME }}/api
       - name: Push Docker image to DockerHub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/api
 
