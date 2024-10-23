@@ -1,9 +1,6 @@
 name: Build and Deploy Backend
 
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 jobs:
   build:
@@ -11,17 +8,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to DockerHub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
       - name: Build Docker image with Docker Compose
-        uses: docker/compose-cli-action@0.1.1
-        run: docker-compose -f docker-compose.yml build
+        run: docker compose -f docker-compose.yml build ml_model
+      - name: Tag the model
+        run: docker tag ml_model ${{ secrets.DOCKERHUB_USERNAME }}/ml_model
       - name: Push Docker image to DockerHub
-        uses: docker/compose-cli-action@0.1.1
-        run: docker-compose -f docker-compose.yml push
+        run: docker compose -f docker-compose.yml push
 
   deploy:
     runs-on: ubuntu-latest
@@ -36,5 +31,5 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd /home/ubuntu
-            docker-compose -f docker-compose.yml pull
-            docker-compose -f docker-compose.yml up -d
+            docker compose -f docker-compose.yml pull
+            docker compose -f docker-compose.yml up -d
