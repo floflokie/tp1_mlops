@@ -8,15 +8,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Docker Buildx
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+        uses: actions/checkout@v3
       - name: Build Docker image with Docker Compose
-        run: docker compose -f docker-compose.yml build ml_model
+        run: docker compose -f docker-compose.yml build
       - name: Tag the model
-        run: docker tag ml_model ${{ secrets.DOCKERHUB_USERNAME }}/ml_model
+        run: docker tag ml_model ${{ secrets.DOCKERHUB_USERNAME }}/api
       - name: Push Docker image to DockerHub
-        run: docker compose -f docker-compose.yml push
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/api
 
   deploy:
     runs-on: ubuntu-latest
@@ -31,5 +29,5 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd /home/ubuntu
-            docker compose -f docker-compose.yml pull
-            docker compose -f docker-compose.yml up -d
+            docker compose pull ${{ secrets.DOCKERHUB_USERNAME }}/api
+            docker compose up -d
